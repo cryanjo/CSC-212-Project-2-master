@@ -1,0 +1,298 @@
+#customDiv1 {
+    background: url("../img/header-logo.png") no-repeat scroll left;
+    /*border-bottom: 25px solid #003F72;*/
+    top: 50px;
+    height: 100px;
+    width: 1350px;
+}
+#customDiv2 {
+}
+#customDiv3 {
+}
+body, html {
+    height: 100%;
+}
+body {
+    background-color: #023049;
+    font-family: verdana,sans-serif;
+    font-size: 100%;
+    line-height: 1.2em;
+    margin: auto;
+    padding: 0;
+}
+p {
+    margin: 1.5em 0.3em 0.5em;
+    padding: 0;
+}
+a:link, a:visited {
+    color: #00467F;
+    text-decoration: none;
+}
+a:active {
+    color: #999999;
+}
+a:hover {
+    color: #D1C19D;
+}
+img.left {
+    float: left;
+}
+img.right {
+    float: right;
+}
+h1 {
+    border-bottom: 1px solid #CCCCCC;
+    color: #003261;
+    font-size: 1.75em;
+    font-weight: normal;
+    line-height: 100%;
+    margin: 10px 0;
+    padding: 0;
+}
+h2, h3 {
+    margin: 20px 0 10px 5px;
+}
+ul, ol {
+    margin: 200px;
+    padding-left: 0;
+}
+li {
+    margin: 2px 2px 8px 20px;
+}
+dfn, acronym {
+    border-bottom: 1px dashed #000000;
+    cursor: help;
+    font-style: normal;
+    padding-bottom: 0;
+}
+td.formLabel {
+    font-size: 0.9em;
+    padding: 0.1em;
+    text-align: right;
+    vertical-align: middle;
+}
+td.formField {
+    padding: 0.1em;
+    text-align: left;
+    vertical-align: middle;
+}
+td.formGroup {
+    vertical-align: top;
+}
+form {
+    margin: 0;
+    padding: 0;
+}
+form fieldset table {
+    margin: 0.3em;
+    padding: 0.3em 0;
+}
+form fieldset {
+    border: 1px solid #DDDDDD;
+    margin: 0.5em 0.5em 0.5em 0;
+    padding: 0;
+}
+form legend {
+    color: #F8971A;
+    font-family: verdana,sans-serif;
+    font-weight: bold;
+}
+form tr {
+    margin: 0;
+    padding: 0;
+}
+form td {
+    margin: 0;
+    padding: 0 0 0.1em;
+}
+form input, textarea, option, select {
+    font-family: verdana,sans-serif;
+    font-size: 0.85em;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+table.DataTable {
+    margin: 0 0 1em;
+    width: 100%;
+}
+table.DataTable td {
+    padding: 0.2em;
+}
+table.DataTable th {
+    background: none repeat scroll 0 0 #F0E68C;
+    color: #000000;
+    padding: 0.2em;
+    text-align: center;
+}
+table.DataTable tr.DataRowEven {
+    background: none repeat scroll 0 0 #FFFACD;
+}
+#header {
+}
+#pageHeader {
+    margin: 0 0 0.4em;
+    padding: 0 0 0.7em;
+}
+#pageHeader h1 {
+    border-bottom: 1px solid #CCCCCC;
+    color: #003261;
+    font-size: 1.75em;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+#breadCrumb {
+    font-size: smaller;
+    margin: 20px 0;
+}
+#container {
+    background-color: #F8F7F6;
+    border-left: 1px solid #CCCCCC;
+    height: 200%;
+    left: 250px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 95px;
+    width: 1100px;
+}
+#content {
+    margin: 0;
+    padding: 20px 40px 40px;
+}
+#floorplancontainer {
+    background-color: #F8F7F6;
+    border-left: 1px solid #CCCCCC;
+    height: 200%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 95px;
+    width: 1100px;
+    z-index:-1;
+}
+#floorplancontent {
+    margin: 0;
+    padding: 20px 40px 40px;
+}
+#terms {
+    padding: 0;
+}
+#terms h2 {
+    margin: 20px 0 10px 5px;
+}
+#terms ul {
+    margin: 0 0 0 0.9em;
+    padding: 0 0 0.6em;
+}
+#terms li {
+    list-style-position: outside;
+    margin: 0 0 0.2em 0.9em;
+    padding: 0;
+}
+#sidebar {
+    background-color: #F8F7F6;
+    color: #00467F;
+    height: 200%;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 95px;
+    width: 250px;
+}
+#menu {
+    margin: 0.2em 0.4em 0.2em 0.7em;
+    padding: 0;
+}
+#menu ul {
+    margin: 10px 0;
+    padding: 0;
+}
+#menu li {
+    list-style-image: none;
+    list-style-type: none;
+}
+#menu h1 {
+    color: #6E6D6D;
+    font-size: 1.2em;
+    margin: 12px 10px 0 12px;
+    padding: 0;
+}
+h2.submenuHeader {
+    border-bottom-style: none;
+    font-size: 95%;
+    margin: 0 0 0.2em;
+    padding: 0;
+    text-align: left;
+}
+#reminders {
+    color: #F8971A;
+    margin: 0 10px 10px 20px;
+    padding: 4px 0 10px;
+}
+#reminders ul, #reminders ol {
+    margin: 0;
+    padding: 0;
+}
+#reminders li {
+    font-size: 12px;
+    list-style-image: none;
+    list-style-type: none;
+    margin-bottom: 4px;
+    padding-left: 10px;
+}
+#reminders h1 {
+    color: #6E6D6D;
+    font-size: 1.2em;
+}
+#footer {
+    clear: both;
+    font-size: x-small;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+#footer p {
+    line-height: 1.2em;
+    margin: 0;
+    padding: 0.3em 0 0;
+}
+.Error {
+    background-color: #FFCC66;
+    border: thin dashed;
+    margin: 0.6em 1em;
+    padding: 0.5em;
+}
+.Important {
+    background-color: #FFE4E1;
+    border: 1px solid;
+    color: #000000;
+    margin: 0.6em 1em;
+    padding: 0.5em;
+}
+.Success {
+    color: #000000;
+    font-weight: bold;
+}
+.Required {
+    color: #FF0000;
+    font-size: 80%;
+    text-align: right;
+}
+.Highlight {
+    background: none repeat scroll 0 0 #FFFFE0;
+    border: 1px solid #808080;
+    padding: 0.1em;
+}
+.Underline {
+    border-bottom: 1px solid #000000;
+}
+.Aside {
+    color: #FF0000;
+    font-size: 89%;
+}
+.popupForm {
+    background-color: #FFFACD;
+    border: 1px dashed #D2B48C;
+    padding: 0.25em 0 0.6em 0.25em;
+}

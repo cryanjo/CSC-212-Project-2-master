@@ -1,0 +1,164 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+based on http://bl.ocks.org/mbostock/1134768
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Housing Selection That Remain Open</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/d3.layout.js"></script>
+    <script type="text/javascript" src="js/d3.csv.js"></script>
+    <script type="text/javascript" src="js/getHousingData.js"></script>
+    <script type="text/javascript" src="js/getHousingDataForTreeMap.js"></script>
+    <script type="text/javascript" src="js/buildSideBar.js"></script>
+    <link href="css/project2.css" media="all" type="text/css" rel="stylesheet">
+    <style type="text/css">
+
+svg {
+  width: 850px;
+  height: 500px;
+  border: solid 1px #ccc;
+  font: 10px sans-serif;
+  shape-rendering: crispEdges;
+  margin-left: 250px;
+  margin-top: 50px;
+}
+
+    </style>
+  </head>
+  <body>
+        <div id="customDiv1"></div>
+        <div id="customDiv2"></div>
+        <div id="customDiv3"></div>
+        <div id="header">
+            <p></p>
+        </div>
+    <div id="sidebar">
+        <script type="text/javascript">
+            var roomData = getHousingDataTreemap();
+            makeSideBarListing(roomData);
+        </script>
+    </div>
+
+    <div id="floorplancontainer">
+        <div id="classSelection" align="center">
+        <form id="classranking" span="">
+            <label><input type="radio" name="mode" value="sophomore"> Sophomore</label>
+            <label><input type="radio"  name="mode" value="upperclass"> Junior/Senior</label>
+        </form>
+        </div>
+        <div id="viewSelection" align="center">
+        <form id="viewtype">
+            <label><input type="radio" name="mode" value="campus" checked> Show Campus Areas</label>
+            <label><input type="radio" name="mode" value="roomoccupancy"> Show choices by room occupancy</label>
+        </form>
+        </div>
+       <div id="floorplancontent">
+        <script type="text/javascript">
+        var w = 850,
+            h = 500,
+            p = [20, 50, 30, 20],
+            // reverse x and y for horizontal bars
+            // y is the buildings
+            // x is available rooms
+            y = d3.scale.ordinal().rangeRoundBands([0, w - p[1] - p[3]]),
+            x = d3.scale.linear().range([0, h - p[0] - p[2]]),
+            z = d3.scale.category20c();
+            //z = d3.scale.ordinal().range(["lightpink", "darkgray", "lightblue"]);
+
+        var svg = d3.select("body").append("svg:svg")
+            .attr("width", w)
+            .attr("height", h)
+            .append("svg:g")
+            .attr("transform", "translate(" + p[3] + "," + (h - p[2]) + ")");
+
+        d3.csv("housingRooms.csv", function(housingRooms) {
+        var housingRoomsTest = getHousingData();
+
+        // Transpose the data into layers by available Rooms.
+        var availableRooms1 = d3.layout.stack()(["Single", "Double w/RA", "Apartment for 2",
+                                        "Double", "Apartment for 3", "Suite for 4", "Suite for 6"].map(function(availableRooms) {
+                                            return housingRoomsTest.map(function(d) {
+                                                return {x: d.Building, y: +d[availableRooms1]};
+                                            });
+                                        }));
+                                        
+        var availableRooms = d3.layout.stack()(["Single", "DoubleRA", "AptFor2",
+                                        "Double", "AptFor3", "4Suite", "6Suite"].map(function(availableRooms) {
+                                            return housingRooms.map(function(d) {
+                                                return {x: d.Building, y: +d[availableRooms]};
+                                            });
+                                        }));
+        // apply names to the layers
+        availableRooms[0].name = "Single";
+        availableRooms[1].name = "Double w/RA";
+        availableRooms[2].name = "Apartment for 2";
+        availableRooms[3].name = "Double";
+        availableRooms[4].name = "Apartment for 3";
+        availableRooms[5].name = "Suite for 4";
+        availableRooms[6].name = "Suite for 6";
+        var numRoomTypes = 7;
+
+  // Compute the x-domain (by date) and y-domain (by top).
+  x.domain(availableRooms[0].map(function(d) { return d.x; }));
+  y.domain([0, d3.max(availableRooms[availableRooms.length - 1], function(d) { return d.y0 + d.y; })]);
+
+  // Add a group for each available room type.
+  var availableRoom = svg.selectAll("g.availableRoom")
+      .data(availableRooms)
+    .enter().append("svg:g")
+      .attr("class", "availableRoom")
+      .style("fill", function(d, i) { return z(i); })
+      .style("stroke", function(d, i) { return d3.rgb(z(i)).darker(); });
+
+  // Add a rect for each available room type.
+  var rect = availableRoom.selectAll("rect")
+      .data(Object)
+    .enter().append("svg:rect")
+      .attr("x", function(d) { return x(d.x); })
+      .attr("y", function(d) { return -y(d.y0) - y(d.y); })
+      .attr("height", function(d) { return y(d.y); })
+      .attr("width", x.rangeBand())
+      .append("title")
+            .text(function(d, n) {
+                var nlayer = n % numRoomTypes;
+                var tooltip = "rooms=" + d.y + " type=" + availableRooms[nlayer].name;
+                return tooltip;
+            });
+
+  // Add a label per building.
+  var label = svg.selectAll("text")
+      .data(x.domain())
+    .enter().append("svg:text")
+      .attr("x", function(d) { return x(d) + x.rangeBand() / 2; })
+      .attr("y", 6)
+      .attr("text-anchor", "middle")
+      .attr("dy", ".71em")
+      .text(x(d));
+
+  // Add y-axis rules.
+  var rule = svg.selectAll("g.rule")
+      .data(y.ticks(5))
+    .enter().append("svg:g")
+      .attr("class", "rule")
+      .attr("transform", function(d) { return "translate(0," + -y(d) + ")"; });
+
+  rule.append("svg:line")
+      .attr("x2", w - p[1] - p[3])
+      .style("stroke", function(d) { return d ? "#fff" : "#000"; })
+      .style("stroke-opacity", function(d) { return d ? .7 : null; });
+
+  rule.append("svg:text")
+      .attr("x", w - p[1] - p[3] + 6)
+      .attr("dy", ".35em")
+      .text(d3.format(",d"));
+});
+
+    </script>
+    </div>
+    </div>
+  </body>
+</html>

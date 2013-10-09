@@ -1,0 +1,168 @@
+
+<!--
+    based on http://mbostock.github.io/d3/talk/20111116/pack-hierarchy.html
+-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Housing Selection That Remain Open</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script type="text/javascript" src="js/d3.js"></script>
+    <script type="text/javascript" src="js/d3.layout.js"></script>
+    <script type="text/javascript" src="js/getHousingDataForPacked.js"></script>
+    <script type="text/javascript" src="js/getHousingDataForTreeMap.js"></script>
+    <script type="text/javascript" src="js/buildSideBar.js"></script>
+    <link href="css/project2.css" media="all" type="text/css" rel="stylesheet">
+    <style type="text/css">
+
+        text {
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        text.parent {
+            fill: #1f77b4;
+        }
+
+        circle {
+            fill: #ccc;
+            stroke: #999;
+            pointer-events: all;
+        }
+
+        circle.parent {
+            fill: #1f77b4;
+            fill-opacity: .1;
+            stroke: steelblue;
+        }
+
+        circle.parent:hover {
+            stroke: #ff7f0e;
+            stroke-width: .5px;
+        }
+
+        circle.parent.text {
+            top: -50%;
+        }
+
+        circle.child {
+            pointer-events: none;
+        }
+
+    </style>
+  </head>
+  <body>
+        <div id="customDiv1"></div>
+        <div id="customDiv2"></div>
+        <div id="customDiv3"></div>
+        <div id="header">
+            <p></p>
+        </div>
+    <div id="sidebar">
+        <script type="text/javascript">
+            var roomData = getHousingDataTreemap();
+            makeSideBarListing(roomData);
+        </script>
+
+    </div>
+        <div id="classSelection" align="center">
+        <form id="classranking" span="">
+            <label><input type="radio" name="mode" value="sophomore"> Sophomore</label>
+            <label><input type="radio"  name="mode" value="upperclass"> Junior/Senior</label>
+        </form>
+        </div>
+        <div id="viewSelection" align="center">
+        <form id="viewtype">
+            <label><input type="radio" name="mode" value="campus" checked> Show Campus Areas</label>
+            <label><input type="radio" name="mode" value="roomoccupancy"> Show choices by room occupancy</label>
+        </form>
+        </div>
+    <div id="floorplancontainer">
+    <div id="floorplancontent">
+
+        <script type="text/javascript">
+         var w = 850,
+             h = 850,
+             r = 720,
+             x = d3.scale.linear().range([0, r]),
+             y = d3.scale.linear().range([0, r]),
+            node,
+            root;
+
+            var pack = d3.layout.pack()
+                    .size([r, r])
+                    .value(function(d) { return d.size; })
+            
+            var vis = d3.select("body").insert("svg:svg", "h2")
+                .attr("width", w)
+                .attr("height", h)
+                .style("margin-left",250)
+                .append("svg:g")
+                .attr("transform", "translate(" + (w - r) / 2 + "," + (h - r) / 2 + ")");
+
+            var roomData = getHousingDataPacked();
+            //root = JSON.parse( roomData );
+            makeCircles(roomData);
+
+            function makeCircles(data) {
+            node = root = data;
+            var nodes = pack.nodes(root);
+
+            vis.selectAll("circle")
+                .data(nodes)
+                .enter().append("svg:circle")
+                .attr("class", function(d) { return d.children ? "parent" : "child"; })
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; })
+                .attr("r", function(d) {return d.r; })
+                .on("click", function(d) { return zoom(node == d ? root : d); });
+
+                vis.selectAll("text")
+                .data(nodes)
+                .enter().append("svg:text")
+                .attr("class", function(d) { return d.children ? "parent" : "child"; })
+                .attr("x", function(d) { return d.x; })
+                .attr("y", function(d) { return d.y; })
+                .attr("dy", ".35em")
+                .attr("text-anchor", function(d) { return d.children ? "end" : "middle"} )
+                .style("opacity", function(d) { return d.r > 20 ? 1 : 0; })
+                .text(function(d) { return d.children ? d.name : (d.name + " " + d.size + " remaining"); });
+               //.html(function(d) { return d.children ? d.name : (d.name + "</br>" + d.size + " remaining"); });
+
+                d3.select(window).on("click", function() { zoom(root); });
+
+                /* place the building names on top
+                viz.select(this).selectAll("#bubble-buildings").data([data])
+                    .enter()
+                    .append("div")
+                    .attr("id", "bubble-labels") */
+
+            };
+
+            function zoom(d, i) {
+                var k = r / d.r / 2;
+                    x.domain([d.x - d.r, d.x + d.r]);
+                    y.domain([d.y - d.r, d.y + d.r]);
+
+                var t = vis.transition()
+                    .duration(d3.event.altKey ? 7500 : 750);
+
+                t.selectAll("circle")
+                    .attr("cx", function(d) { return x(d.x); })
+                    .attr("cy", function(d) { return y(d.y); })
+                    .attr("r", function(d) { return k * d.r; });
+
+                t.selectAll("text")
+                    .attr("x", function(d) { return x(d.x); })
+                    .attr("y", function(d) { return y(d.y); })
+                    .style("opacity", function(d) { return k * d.r > 20 ? 1 : 0; });
+
+                node = d;
+                d3.event.stopPropagation();
+            }
+    </script>
+    </div>
+    </div>
+  </body>
+</html>
